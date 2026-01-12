@@ -197,7 +197,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
                 # Read back state after command
                 await self._async_read_state(client)
                 # Notify entities of state change
-                self.async_set_updated_data(None)
+                self.async_update_listeners()
             finally:
                 await client.disconnect()
         except (BleakError, TimeoutError) as ex:
