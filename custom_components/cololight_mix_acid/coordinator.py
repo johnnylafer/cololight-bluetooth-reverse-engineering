@@ -100,8 +100,15 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
             # Read STATE characteristic
             state_data = await client.read_gatt_char(CHAR_STATE)
             if len(state_data) >= 5:
-                # Check if device is on (not all zeros except header)
-                self._is_on = not all(b == 0 for b in state_data[1:])
+                # Check if device is on
+                # OFF state: ff 00 00 00 ff (middle bytes all zero, last byte 0xFF)
+                # ON RGB mode: ff XX XX XX 00 (RGB values, last byte 0x00)
+                # ON Scene mode: ff XX XX XX YY (scene bytes, last byte not 0x00 or 0xFF typically)
+
+                # Device is OFF if bytes 1-3 are all zero AND byte 4 is 0xFF
+                is_off_pattern = (state_data[1] == 0 and state_data[2] == 0 and
+                                 state_data[3] == 0 and state_data[4] == 0xFF)
+                self._is_on = not is_off_pattern
 
                 if self._is_on:
                     # Mode byte is at position 4

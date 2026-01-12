@@ -6,24 +6,13 @@ DOMAIN = "cololight_mix_acid"
 CHAR_STATE = "2EDCF977-60AC-49B0-AA2A-ED75ABD74EA3"
 CHAR_BRIGHTNESS = "B4D64C4F-C5A0-4A1B-AFEA-306B66269750"
 
-# Built-in scenes (effect name -> hex value to write)
+# Built-in scenes (effect name -> hex value to write/read)
 BUILT_IN_SCENES = {
-    "Sunrise": "ff01800900",
-    "Sunset": "ff02800902",
-    "Jungle": "ff03800a03",
-    "Ocean": "ff04001801",
-    "Cool Mist": "ff06891800",
-    "Snow Mountain": "ff07800504",
-}
-
-# Reverse mapping for reading
-SCENE_READ_TO_NAME = {
-    "ff00098001": "Sunrise",
-    "ff02090280": "Sunset",
-    "ff030a0a80": "Jungle",
-    "ff01180004": "Ocean",
-    "ff00188906": "Cool Mist",
-    "ff04050580": "Snow Mountain",
+    "Cool Mist": "ff00188906",
+    "Candy": "ff00189906",
+    "Savannah": "ff0018ad06",
+    "Deep Blue": "ff301f8406",
+    "Purple Haze": "ff7010b206",
 }
 
 # Configuration
