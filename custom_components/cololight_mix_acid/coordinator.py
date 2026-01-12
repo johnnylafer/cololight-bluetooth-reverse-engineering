@@ -1,4 +1,6 @@
 """Coordinator for Cololight Mix ACID."""
+from __future__ import annotations
+
 import logging
 from typing import Any
 
