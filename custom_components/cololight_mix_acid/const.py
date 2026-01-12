@@ -8,6 +8,7 @@ CHAR_BRIGHTNESS = "B4D64C4F-C5A0-4A1B-AFEA-306B66269750"
 
 # Built-in scenes (effect name -> hex value to write/read)
 BUILT_IN_SCENES = {
+    "Color Flow": "ff01180004",
     "Cool Mist": "ff00188906",
     "Candy": "ff00189906",
     "Savannah": "ff0018ad06",
