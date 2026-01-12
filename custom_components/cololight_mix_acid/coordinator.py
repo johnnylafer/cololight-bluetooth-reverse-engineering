@@ -119,8 +119,9 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
                         self._rgb_color = (state_data[3], state_data[2], state_data[1])
                         self._current_scene = None
                     else:
-                        # Scene mode - Device returns bytes in reversed order
-                        # Convert: [FF] [B4] [B3] [B2] [B1] -> [FF] [B1] [B2] [B3] [B4]
+                        # Scene mode - Device un-reverses what we send
+                        # We send: ff04001801 -> Device stores: ff01180004
+                        # So reverse it back to match our const.py values
                         reversed_scene = bytes([state_data[0], state_data[4], state_data[3], state_data[2], state_data[1]])
                         self._current_scene = reversed_scene.hex()
 
