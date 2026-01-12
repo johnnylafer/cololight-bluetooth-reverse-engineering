@@ -28,7 +28,6 @@ async def async_setup_entry(
 
     entities: list[SelectEntity] = [
         CololightEffectSelect(coordinator),
-        CololightSpeedSelect(coordinator),
         CololightVariationSelect(coordinator),
     ]
 
@@ -78,8 +77,9 @@ class CololightEffectSelect(SelectEntity):
             return
 
         effect_idx = DYNAMIC_EFFECTS[option]
-        # Use mode 0x01 (dynamic effect) with default speed and variation
-        cmd = protocol.encode_dynamic_effect(effect_idx)
+        # Use mode 0x06 (smooth individual) like the original working scenes
+        # Default speed 0x18 (24), variation 0x00
+        cmd = protocol.encode_smooth_individual(effect_idx, speed=0x18, variation=0)
         await self.coordinator.async_set_scene(cmd.hex())
         self._current_effect = option
         self.async_write_ha_state()
@@ -218,14 +218,14 @@ class CololightVariationSelect(SelectEntity):
                 pass
 
         if current_effect_idx is not None:
-            # Re-apply current effect with new variation
-            cmd = protocol.encode_dynamic_effect(
+            # Re-apply current effect with new variation using smooth mode
+            cmd = protocol.encode_smooth_individual(
                 current_effect_idx, speed=current_speed, variation=variation
             )
             await self.coordinator.async_set_scene(cmd.hex())
         else:
-            # Default to white breathing if no current effect
-            cmd = protocol.encode_dynamic_effect(0x89, variation=variation)
+            # Default to white breathing with smooth mode if no current effect
+            cmd = protocol.encode_smooth_individual(0x89, speed=0x18, variation=variation)
             await self.coordinator.async_set_scene(cmd.hex())
 
         self._current_variation = option

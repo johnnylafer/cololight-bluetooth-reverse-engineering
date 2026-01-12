@@ -12,7 +12,7 @@ from .coordinator import CololightDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [Platform.LIGHT, Platform.SELECT]
+PLATFORMS = [Platform.LIGHT, Platform.SELECT, Platform.NUMBER, Platform.SWITCH]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

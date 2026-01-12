@@ -129,14 +129,14 @@ VARIATION_MODES_04 = {
     "Three Block Outer": 0x5,
 }
 
-# Quick access scenes (using mode 0x01 with default settings)
+# Quick access scenes (ORIGINAL WORKING VALUES - these use modes 0x04 and 0x06 for smooth transitions)
 BUILT_IN_SCENES = {
-    "Color Flow": "ff01180004",  # Effect 0x18 with mode 0x01, speed 0x00, variation 0x04
-    "Cool Mist": "ff01890a00",   # White Breathing
-    "Candy": "ff01990a00",       # RGB Flash
-    "Savannah": "ff01ad0a00",    # Birthday Party
-    "Deep Blue": "ff01841f30",   # Blue Breathing, slower
-    "Purple Haze": "ff01b21070", # Couple Date
+    "Color Flow": "ff04001801",  # Mode 0x04 (special individual), effect 0x18, speed 0x00, variation 0x04
+    "Cool Mist": "ff06891800",   # Mode 0x06 (smooth individual), White Breathing (0x89), speed 0x18
+    "Candy": "ff06991800",       # Mode 0x06 (smooth individual), RGB Flash (0x99), speed 0x18
+    "Savannah": "ff06ad1800",    # Mode 0x06 (smooth individual), Birthday Party (0xad), speed 0x18
+    "Deep Blue": "ff06841f30",   # Mode 0x06 (smooth individual), Blue Breathing (0x84), slower
+    "Purple Haze": "ff06b21070", # Mode 0x06 (smooth individual), Couple Date (0xb2)
 }
 
 # Configuration
