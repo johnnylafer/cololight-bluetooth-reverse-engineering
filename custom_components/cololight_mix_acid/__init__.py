@@ -1,0 +1,51 @@
+"""The Cololight Mix ACID integration."""
+import logging
+
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
+from homeassistant.core import HomeAssistant
+
+from .const import CONF_MAC_ADDRESS, DOMAIN
+from .coordinator import CololightDataUpdateCoordinator
+
+_LOGGER = logging.getLogger(__name__)
+
+PLATFORMS = [Platform.LIGHT]
+
+
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Set up Cololight Mix ACID from a config entry."""
+    mac_address = entry.data[CONF_MAC_ADDRESS]
+
+    # Create coordinator
+    coordinator = CololightDataUpdateCoordinator(hass, mac_address)
+
+    # Store coordinator
+    hass.data.setdefault(DOMAIN, {})
+    hass.data[DOMAIN][entry.entry_id] = coordinator
+
+    # Forward setup to platforms
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    # Start coordinator after platforms have subscribed
+    entry.async_on_unload(coordinator.async_start())
+
+    # Listen for options updates
+    entry.async_on_unload(entry.add_update_listener(async_reload_entry))
+
+    return True
+
+
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Unload a config entry."""
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+
+    if unload_ok:
+        hass.data[DOMAIN].pop(entry.entry_id)
+
+    return unload_ok
+
+
+async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Reload config entry when options change."""
+    await hass.config_entries.async_reload(entry.entry_id)

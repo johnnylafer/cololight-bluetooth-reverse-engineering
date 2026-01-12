@@ -1,0 +1,39 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Cololight Mix ACID",
+        "description": "Select your Cololight Mix ACID device",
+        "data": {
+          "mac_address": "Device",
+          "name": "Name"
+        }
+      },
+      "confirm": {
+        "title": "Confirm discovered device",
+        "description": "A Cololight Mix ACID device was found. Do you want to add it?",
+        "data": {
+          "name": "Name"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to device",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Cololight Mix ACID Options",
+        "description": "Configure custom scenes for your device.\n\nAdd custom scenes in the format:\nSceneName:ff06891800\nMyScene:ff01800900\n\nOne scene per line. Hex values must be 10 characters (WRITE format).",
+        "data": {
+          "custom_scenes": "Custom Scenes"
+        }
+      }
+    }
+  }
+}
