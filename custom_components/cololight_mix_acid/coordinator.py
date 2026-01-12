@@ -6,7 +6,7 @@ from typing import Any
 
 from bleak import BleakClient
 from bleak.exc import BleakError
-from bleak_retry_connector import establish_connection
+from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
 
 from homeassistant.components import bluetooth
 from homeassistant.components.bluetooth.active_update_coordinator import (
@@ -79,19 +79,22 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
 
         # Establish connection using bleak-retry-connector
         try:
-            async with establish_connection(
-                client_class=BleakClient,
+            client = await establish_connection(
+                BleakClientWithServiceCache,
                 device=ble_device,
                 name=service_info.name,
                 disconnected_callback=lambda client: None,
                 max_attempts=3,
                 use_services_cache=True,
-            ) as client:
+            )
+            try:
                 await self._async_read_state(client)
+            finally:
+                await client.disconnect()
         except (BleakError, TimeoutError) as ex:
             _LOGGER.debug("Error polling %s: %s", self.address, ex)
 
-    async def _async_read_state(self, client: BleakClient) -> None:
+    async def _async_read_state(self, client: BleakClientWithServiceCache) -> None:
         """Read current state from device."""
         try:
             # Read STATE characteristic
@@ -172,22 +175,25 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
             return
 
         try:
-            async with establish_connection(
-                client_class=BleakClient,
+            client = await establish_connection(
+                BleakClientWithServiceCache,
                 device=ble_device,
                 name=ble_device.name,
                 disconnected_callback=lambda client: None,
                 max_attempts=3,
                 use_services_cache=True,
-            ) as client:
+            )
+            try:
                 await command_func(client)
                 # Read back state after command
                 await self._async_read_state(client)
+            finally:
+                await client.disconnect()
         except (BleakError, TimeoutError) as ex:
             _LOGGER.error("Failed to execute command: %s", ex)
 
     async def _async_write_brightness(
-        self, client: BleakClient, brightness: int
+        self, client: BleakClientWithServiceCache, brightness: int
     ) -> None:
         """Write brightness value."""
         brightness = max(0, min(100, brightness))
@@ -196,7 +202,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
 
     async def _async_write_rgb(
         self,
-        client: BleakClient,
+        client: BleakClientWithServiceCache,
         rgb: tuple[int, int, int],
         brightness: int | None,
     ) -> None:
@@ -215,7 +221,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
         await client.write_gatt_char(CHAR_STATE, cmd, response=True)
 
     async def _async_write_scene(
-        self, client: BleakClient, scene_hex: str
+        self, client: BleakClientWithServiceCache, scene_hex: str
     ) -> None:
         """Write scene command."""
         if len(scene_hex) != 10:
@@ -225,7 +231,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
         cmd = bytes.fromhex(scene_hex)
         await client.write_gatt_char(CHAR_STATE, cmd, response=True)
 
-    async def _async_write_off(self, client: BleakClient) -> None:
+    async def _async_write_off(self, client: BleakClientWithServiceCache) -> None:
         """Write off command."""
         # Set to black (RGB 0,0,0)
         cmd = bytes([0xFF, 0x00, 0x00, 0x00, 0x00])
