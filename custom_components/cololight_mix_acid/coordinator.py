@@ -119,8 +119,10 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
                         self._rgb_color = (state_data[3], state_data[2], state_data[1])
                         self._current_scene = None
                     else:
-                        # Scene mode
-                        self._current_scene = state_data.hex()
+                        # Scene mode - Device returns bytes in reversed order
+                        # Convert: [FF] [B4] [B3] [B2] [B1] -> [FF] [B1] [B2] [B3] [B4]
+                        reversed_scene = bytes([state_data[0], state_data[4], state_data[3], state_data[2], state_data[1]])
+                        self._current_scene = reversed_scene.hex()
 
             # Read brightness
             brightness_data = await client.read_gatt_char(CHAR_BRIGHTNESS)
