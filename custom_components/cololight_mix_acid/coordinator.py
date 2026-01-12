@@ -4,6 +4,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from bleak import BleakClient
 from bleak.exc import BleakError
 from bleak_retry_connector import establish_connection
 
@@ -79,7 +80,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
         # Establish connection using bleak-retry-connector
         try:
             async with establish_connection(
-                client_class=bluetooth.BleakClient,
+                client_class=BleakClient,
                 device=ble_device,
                 name=service_info.name,
                 disconnected_callback=lambda client: None,
@@ -90,7 +91,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
         except (BleakError, TimeoutError) as ex:
             _LOGGER.debug("Error polling %s: %s", self.address, ex)
 
-    async def _async_read_state(self, client: bluetooth.BleakClient) -> None:
+    async def _async_read_state(self, client: BleakClient) -> None:
         """Read current state from device."""
         try:
             # Read STATE characteristic
@@ -172,7 +173,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
 
         try:
             async with establish_connection(
-                client_class=bluetooth.BleakClient,
+                client_class=BleakClient,
                 device=ble_device,
                 name=ble_device.name,
                 disconnected_callback=lambda client: None,
@@ -186,7 +187,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
             _LOGGER.error("Failed to execute command: %s", ex)
 
     async def _async_write_brightness(
-        self, client: bluetooth.BleakClient, brightness: int
+        self, client: BleakClient, brightness: int
     ) -> None:
         """Write brightness value."""
         brightness = max(0, min(100, brightness))
@@ -195,7 +196,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
 
     async def _async_write_rgb(
         self,
-        client: bluetooth.BleakClient,
+        client: BleakClient,
         rgb: tuple[int, int, int],
         brightness: int | None,
     ) -> None:
@@ -214,7 +215,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
         await client.write_gatt_char(CHAR_STATE, cmd, response=True)
 
     async def _async_write_scene(
-        self, client: bluetooth.BleakClient, scene_hex: str
+        self, client: BleakClient, scene_hex: str
     ) -> None:
         """Write scene command."""
         if len(scene_hex) != 10:
@@ -224,7 +225,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
         cmd = bytes.fromhex(scene_hex)
         await client.write_gatt_char(CHAR_STATE, cmd, response=True)
 
-    async def _async_write_off(self, client: bluetooth.BleakClient) -> None:
+    async def _async_write_off(self, client: BleakClient) -> None:
         """Write off command."""
         # Set to black (RGB 0,0,0)
         cmd = bytes([0xFF, 0x00, 0x00, 0x00, 0x00])
