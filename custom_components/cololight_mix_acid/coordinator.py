@@ -15,6 +15,7 @@ from homeassistant.components.bluetooth.active_update_coordinator import (
 from homeassistant.core import CoreState, HomeAssistant, callback
 
 from .const import CHAR_BRIGHTNESS, CHAR_STATE
+from . import protocol
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -100,30 +101,27 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
             # Read STATE characteristic
             state_data = await client.read_gatt_char(CHAR_STATE)
             if len(state_data) >= 5:
-                # Check if device is on
-                # OFF state: ff 00 00 00 ff (middle bytes all zero, last byte 0xFF)
-                # ON RGB mode: ff XX XX XX 00 (RGB values, last byte 0x00)
-                # ON Scene mode: ff XX XX XX YY (scene bytes, last byte not 0x00 or 0xFF typically)
+                # Use protocol decoder to interpret state
+                decoded = protocol.decode_state(state_data)
 
-                # Device is OFF if bytes 1-3 are all zero AND byte 4 is 0xFF
+                # Check if device is on (mode is None or mode is valid)
+                # OFF state will have a specific pattern we detect
                 is_off_pattern = (state_data[1] == 0 and state_data[2] == 0 and
                                  state_data[3] == 0 and state_data[4] == 0xFF)
                 self._is_on = not is_off_pattern
 
-                if self._is_on:
-                    # Mode byte is at position 4
-                    mode = state_data[4]
-
-                    if mode == 0x00:
-                        # RGB mode - Read format: [0xFF] [B] [G] [R] [0x00]
-                        self._rgb_color = (state_data[3], state_data[2], state_data[1])
+                if self._is_on and decoded['mode'] is not None:
+                    if decoded['rgb'] is not None:
+                        # RGB color mode
+                        self._rgb_color = decoded['rgb']
                         self._current_scene = None
-                    else:
-                        # Scene mode - Device un-reverses what we send
-                        # We send: ff04001801 -> Device stores: ff01180004
-                        # So reverse it back to match our const.py values
-                        reversed_scene = bytes([state_data[0], state_data[4], state_data[3], state_data[2], state_data[1]])
-                        self._current_scene = reversed_scene.hex()
+                    elif decoded['effect_index'] is not None:
+                        # Effect/scene mode - store the original command we would send
+                        # to recreate this state
+                        self._current_scene = state_data.hex()
+                        # Extract RGB for display (though it's in effect mode)
+                        if decoded['mode'] == 0x00:
+                            self._rgb_color = decoded['rgb']
 
             # Read brightness
             brightness_data = await client.read_gatt_char(CHAR_BRIGHTNESS)
@@ -209,7 +207,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
     ) -> None:
         """Write brightness value."""
         brightness = max(0, min(100, brightness))
-        cmd = bytes([0xCF, brightness])
+        cmd = protocol.encode_brightness(brightness, power_on=True)
         await client.write_gatt_char(CHAR_BRIGHTNESS, cmd, response=True)
 
     async def _async_write_rgb(
@@ -228,8 +226,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
             g = int(g * scale)
             b = int(b * scale)
 
-        # Write format: [0xFF] [0x00] [R] [G] [B]
-        cmd = bytes([0xFF, 0x00, r, g, b])
+        cmd = protocol.encode_solid_color(r, g, b)
         await client.write_gatt_char(CHAR_STATE, cmd, response=True)
 
     async def _async_write_scene(
@@ -245,8 +242,7 @@ class CololightDataUpdateCoordinator(ActiveBluetoothDataUpdateCoordinator[None])
 
     async def _async_write_off(self, client: BleakClientWithServiceCache) -> None:
         """Write off command."""
-        # Set to black (RGB 0,0,0)
-        cmd = bytes([0xFF, 0x00, 0x00, 0x00, 0x00])
+        cmd = protocol.encode_solid_color(0, 0, 0)
         await client.write_gatt_char(CHAR_STATE, cmd, response=True)
 
     @property
