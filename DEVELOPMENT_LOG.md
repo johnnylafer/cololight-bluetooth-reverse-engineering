@@ -149,17 +149,17 @@ else:
 2. **test_reversed_scenes.py** - Reversed bytes testing (proved solution)
 3. **test_final_scenes.py** - Final verification (confirmed working)
 
-All test scripts located in `~/cololight_test/` on Raspberry Pi (amber@192.168.1.215)
+All test scripts located in `~/cololight_test/` on a Linux test machine on the local network
 
 ---
 
 ### User Device Information
 
-- **MAC Address:** 84:BA:20:8E:E0:8A
+- **MAC Address:** `xx:xx:xx:xx:xx:xx` (device-specific - yours will differ)
 - **Device Name:** MIX Acid*
 - **Model:** Cololight Mix ACID
 - **Connection:** Bluetooth LE (BLE)
-- **Test Environment:** Raspberry Pi (Ubuntu laptop at 192.168.1.215)
+- **Test Environment:** a Linux test machine on the local network
 
 ---
 
@@ -185,7 +185,7 @@ All test scripts located in `~/cololight_test/` on Raspberry Pi (amber@192.168.1
    - Confirm coordinator is initialized correctly
 
 2. **If scenes still don't work:**
-   - Run `test_final_scenes.py` on Raspberry Pi to verify hex values
+   - Run `test_final_scenes.py` on the test machine to verify hex values
    - Check if device firmware has changed
    - Verify BLE connection is stable
 
