@@ -8,6 +8,17 @@ Home Assistant custom integration for the **Cololight Mix ACID** Bluetooth LED l
 
 This integration provides full local control of your Cololight Mix ACID device through Bluetooth, including RGB colors, brightness control, and animated scene effects.
 
+## Background
+
+The Cololight Mix ACID has no official API and no published BLE protocol - Cololight only ships a
+mobile app that talks to the device directly. Everything this integration does (colors, brightness,
+scenes) was recovered by sniffing and testing the device's own Bluetooth characteristics from
+scratch: scanning the GATT services, writing test bytes to each writable characteristic, and
+watching how the physical light reacted. The full protocol - every characteristic, byte format and
+effect code found this way - is written up in [COLOLIGHT_BLE_SPEC_ENGLISH.md](COLOLIGHT_BLE_SPEC_ENGLISH.md)
+(🇩🇪 [German version](COLOLIGHT_BLE_SPEC_DE.md)), with the debugging story in
+[DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md) and [IMPLEMENTATION_NOTES.md](IMPLEMENTATION_NOTES.md).
+
 ## Features
 
 - **Full RGB Color Control** - Set any color (0-255 per channel)
@@ -221,7 +232,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Credits
 
-Developed through Bluetooth protocol reverse engineering and analysis of the Cololight Mix ACID device.
+Developed by [@johnnylafer](https://github.com/johnnylafer) through Bluetooth protocol reverse
+engineering and analysis of the Cololight Mix ACID device - see [Background](#background) above.
 
 ## Disclaimer
 

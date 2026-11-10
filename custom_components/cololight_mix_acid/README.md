@@ -100,7 +100,7 @@ After adding custom scenes, they'll appear in the effect list!
 To get hex values for custom scenes:
 
 1. Set up the scene you want in the Cololight app
-2. Use the BLE monitoring scripts from the reverse engineering repository
+2. Use a BLE scanning tool (e.g. `bluetoothctl`, LightBlue, or `bleak`) to monitor the device
 3. Read the STATE characteristic and note the 5-byte hex value
 4. Convert from READ format to WRITE format (reverse bytes 1-4)
 
@@ -108,7 +108,7 @@ To get hex values for custom scenes:
 - READ format: `ff00188906` (Cool Mist)
 - WRITE format: `ff06891800` (bytes 1-4 reversed)
 
-See the [reverse engineering documentation](../../cololight_reverse_engineering/CUSTOM_SCENE_EFFECT_PATTERNS.md) for details.
+See the [BLE protocol spec](../../COLOLIGHT_BLE_SPEC_ENGLISH.md) (🇩🇪 [German](../../COLOLIGHT_BLE_SPEC_DE.md)) for details.
 
 ## Protocol Details
 
@@ -122,7 +122,8 @@ This integration uses the reverse-engineered BLE protocol:
   - Controls brightness for all modes
   - 2-byte format: `[0xCF] [Brightness_0-100]`
 
-For complete protocol documentation, see the [reverse engineering folder](../../cololight_reverse_engineering/).
+For complete protocol documentation, see [COLOLIGHT_BLE_SPEC_ENGLISH.md](../../COLOLIGHT_BLE_SPEC_ENGLISH.md)
+(🇩🇪 [German](../../COLOLIGHT_BLE_SPEC_DE.md)).
 
 ## Troubleshooting
 
@@ -146,16 +147,15 @@ For complete protocol documentation, see the [reverse engineering folder](../../
 
 ## Development
 
-This integration was developed through extensive reverse engineering of the Cololight Mix ACID BLE protocol. See the [reverse engineering documentation](../../cololight_reverse_engineering/) for:
-
-- Complete protocol specification
-- Test scripts and tools
-- Discovery process documentation
-- Scene and color mode tables
+This integration was developed through extensive reverse engineering of the Cololight Mix ACID BLE
+protocol - no official API or protocol documentation exists for this device. See
+[DEVELOPMENT_LOG.md](../../DEVELOPMENT_LOG.md) and [IMPLEMENTATION_NOTES.md](../../IMPLEMENTATION_NOTES.md)
+in the repository root for the full discovery process, and the BLE spec docs above for the complete
+protocol (characteristics, byte formats, scene/color mode tables).
 
 ## Credits
 
-Developed by johnny through BLE protocol reverse engineering.
+Developed by [@johnnylafer](https://github.com/johnnylafer) through BLE protocol reverse engineering.
 
 ## License
 
