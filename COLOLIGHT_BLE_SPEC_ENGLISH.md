@@ -1,5 +1,7 @@
 # Cololight BLE Control Protocol - English Translation
 
+🇩🇪 [Deutsche Version](COLOLIGHT_BLE_SPEC_DE.md)
+
 ## BLE UUID
 
 **Cololight Custom UUID:** `91be3ad5-2c4a-4e82-8a1c-bae9c9116593`
