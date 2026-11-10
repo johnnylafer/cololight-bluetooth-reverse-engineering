@@ -201,7 +201,7 @@ All test scripts located in `~/cololight_test/` on a Linux test machine on the l
 
 - [Home Assistant Bluetooth Data Fetching](https://developers.home-assistant.io/docs/core/bluetooth/bluetooth_fetching_data/)
 - ActiveBluetoothDataUpdateCoordinator documentation
-- Integration GitHub: https://github.com/johnnylafer/ha-cololight-mix-acid
+- Integration GitHub: https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering
 
 ---
 

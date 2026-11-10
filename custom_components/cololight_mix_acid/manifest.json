@@ -9,9 +9,9 @@
     }
   ],
   "dependencies": ["bluetooth_adapters"],
-  "documentation": "https://github.com/johnnylafer/ha-cololight-mix-acid",
+  "documentation": "https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering",
   "integration_type": "device",
-  "issue_tracker": "https://github.com/johnnylafer/ha-cololight-mix-acid/issues",
+  "issue_tracker": "https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering/issues",
   "iot_class": "local_push",
   "requirements": ["bleak>=0.21.0", "bleak-retry-connector>=3.5.0"],
   "version": "1.1.1"

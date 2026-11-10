@@ -1,8 +1,8 @@
 # Cololight Mix ACID for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-[![GitHub Release](https://img.shields.io/github/release/johnnylafer/ha-cololight-mix-acid.svg)](https://github.com/johnnylafer/ha-cololight-mix-acid/releases)
-[![License](https://img.shields.io/github/license/johnnylafer/ha-cololight-mix-acid.svg)](LICENSE)
+[![GitHub Release](https://img.shields.io/github/release/johnnylafer/cololight-bluetooth-reverse-engineering.svg)](https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering/releases)
+[![License](https://img.shields.io/github/license/johnnylafer/cololight-bluetooth-reverse-engineering.svg)](LICENSE)
 
 Home Assistant custom integration for the **Cololight Mix ACID** Bluetooth LED light strip.
 
@@ -48,7 +48,7 @@ effect code found this way - is written up in [COLOLIGHT_BLE_SPEC_ENGLISH.md](CO
 1. Open HACS in Home Assistant
 2. Click the three dots in the top right corner
 3. Select "Custom repositories"
-4. Add the repository URL: `https://github.com/johnnylafer/ha-cololight-mix-acid`
+4. Add the repository URL: `https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering`
 5. Select category: "Integration"
 6. Click "Add"
 7. Find "Cololight Mix ACID" in HACS and click "Download"
@@ -56,7 +56,7 @@ effect code found this way - is written up in [COLOLIGHT_BLE_SPEC_ENGLISH.md](CO
 
 ### Manual Installation
 
-1. Download the latest release from the [releases page](https://github.com/johnnylafer/ha-cololight-mix-acid/releases)
+1. Download the latest release from the [releases page](https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering/releases)
 2. Extract the `cololight_mix_acid` folder from the archive
 3. Copy the `cololight_mix_acid` folder to your `custom_components` directory:
    ```
@@ -223,8 +223,8 @@ Contributions are welcome! Please:
 
 ## Support
 
-- [Report Issues](https://github.com/johnnylafer/ha-cololight-mix-acid/issues)
-- [Discussions](https://github.com/johnnylafer/ha-cololight-mix-acid/discussions)
+- [Report Issues](https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering/issues)
+- [Discussions](https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering/discussions)
 
 ## License
 

@@ -5,7 +5,7 @@
 Home Assistant custom integration for controlling Cololight Mix ACID LED lights via Bluetooth Low Energy (BLE). Provides full control over all device features including RGB colors, 69 dynamic effects, speed control, variations, and smooth transitions.
 
 **Current Version:** 1.1.1
-**Repository:** https://github.com/johnnylafer/ha-cololight-mix-acid
+**Repository:** https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering
 **Installation:** HACS compatible
 
 ---
@@ -337,7 +337,7 @@ This led to the `decode_state()` function properly handling the device's interna
 
 ### HACS Installation
 Integration is compatible with HACS:
-1. Add custom repository: `https://github.com/johnnylafer/ha-cololight-mix-acid`
+1. Add custom repository: `https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering`
 2. Search for "Cololight Mix ACID"
 3. Install and restart Home Assistant
 4. Add via Integrations → Cololight Mix ACID
