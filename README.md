@@ -10,14 +10,18 @@ This integration provides full local control of your Cololight Mix ACID device t
 
 ## Background
 
-The Cololight Mix ACID has no official API and no published BLE protocol - Cololight only ships a
-mobile app that talks to the device directly. Everything this integration does (colors, brightness,
-scenes) was recovered by sniffing and testing the device's own Bluetooth characteristics from
-scratch: scanning the GATT services, writing test bytes to each writable characteristic, and
-watching how the physical light reacted. The full protocol - every characteristic, byte format and
-effect code found this way - is written up in [COLOLIGHT_BLE_SPEC_ENGLISH.md](COLOLIGHT_BLE_SPEC_ENGLISH.md)
-(🇩🇪 [German version](COLOLIGHT_BLE_SPEC_DE.md)), with the debugging story in
-[DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md) and [IMPLEMENTATION_NOTES.md](IMPLEMENTATION_NOTES.md).
+The Cololight Mix ACID ships no public BLE protocol documentation - Cololight only ships a mobile
+app that talks to the device directly, and when this project started, no existing open-source
+project covered this Bluetooth model (only WiFi-model libraries existed for other Cololight
+products). The integration's behavior was built and validated by testing the device's own Bluetooth
+characteristics directly: scanning the GATT services, writing test bytes to each writable
+characteristic, and watching how the physical light reacted. That hands-on discovery process is
+written up in [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md) and [IMPLEMENTATION_NOTES.md](IMPLEMENTATION_NOTES.md).
+
+This repository also includes a formal protocol specification in the manufacturer's own technical
+style - [COLOLIGHT_BLE_SPEC.md](COLOLIGHT_BLE_SPEC.md) (original), with an
+[English](COLOLIGHT_BLE_SPEC_ENGLISH.md) and [German](COLOLIGHT_BLE_SPEC_DE.md) translation -
+included here for reference alongside the reverse-engineering notes above.
 
 ## Features
 
@@ -25,12 +29,12 @@ effect code found this way - is written up in [COLOLIGHT_BLE_SPEC_ENGLISH.md](CO
 - **Brightness Control** - Adjust brightness from 0-100% in both RGB and scene modes
 - **Power Control** - Turn lights on/off
 - **6 Built-in Animated Scenes**:
-  - Sunrise
-  - Sunset
-  - Jungle
-  - Ocean
+  - Color Flow
   - Cool Mist
-  - Snow Mountain
+  - Candy
+  - Savannah
+  - Deep Blue
+  - Purple Haze
 - **Custom Scenes** - Add unlimited custom scenes via hex values through the UI
 - **Bluetooth Auto-discovery** - Automatically finds "MIX Acid" devices
 - **Config Flow** - Easy setup through Home Assistant UI (no YAML needed)
@@ -128,7 +132,7 @@ automation:
         target:
           entity_id: light.cololight_mix_acid
         data:
-          effect: "Ocean"
+          effect: "Sunrise"
 ```
 
 ### Scripts

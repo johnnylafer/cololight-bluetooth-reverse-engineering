@@ -56,14 +56,15 @@ target:
 
 ### Built-in Scenes
 
-The integration includes 6 built-in animated scenes:
+The integration includes 6 built-in animated scenes, carried over from the device's own original
+working scenes (see `const.py`):
 
-- **Sunrise** - Warm sunrise colors
-- **Sunset** - Sunset orange/red hues
-- **Jungle** - Green nature theme
-- **Ocean** - Blue water theme
-- **Cool Mist** - Cyan/blue mist effect
-- **Snow Mountain** - Cool white/blue
+- **Color Flow**
+- **Cool Mist**
+- **Candy**
+- **Savannah**
+- **Deep Blue**
+- **Purple Haze**
 
 ```yaml
 # Activate a scene
@@ -148,10 +149,11 @@ For complete protocol documentation, see [COLOLIGHT_BLE_SPEC_ENGLISH.md](../../C
 ## Development
 
 This integration was developed through extensive reverse engineering of the Cololight Mix ACID BLE
-protocol - no official API or protocol documentation exists for this device. See
+protocol - no existing open-source project covered this Bluetooth model when the work started. See
 [DEVELOPMENT_LOG.md](../../DEVELOPMENT_LOG.md) and [IMPLEMENTATION_NOTES.md](../../IMPLEMENTATION_NOTES.md)
-in the repository root for the full discovery process, and the BLE spec docs above for the complete
-protocol (characteristics, byte formats, scene/color mode tables).
+in the repository root for the full discovery process. The BLE spec docs above are a separate,
+formal protocol specification in the manufacturer's own technical style, included for reference
+alongside the reverse-engineering notes.
 
 ## Credits
 

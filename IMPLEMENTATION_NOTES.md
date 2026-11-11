@@ -108,7 +108,7 @@ Format: [0xff][0x06][effect_index][speed][cd_byte]
 - Couple Date, Relaxation, Cozy Reading, Nature Forest, etc.
 
 ### Nature Effects (0xbc-0xc4)
-- Sunrise, Sunset, Whale Ocean, various nature-themed effects
+- Sunrise, Sunrise Dawn, Starry Sky, Green Field, various nature-themed effects
 
 **Full list in:** `custom_components/cololight_mix_acid/const.py`
 
