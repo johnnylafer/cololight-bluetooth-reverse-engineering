@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Home Assistant custom integration for controlling Cololight Mix ACID LED lights via Bluetooth Low Energy (BLE). Provides full control over all device features including RGB colors, 69 dynamic effects, speed control, variations, and smooth transitions.
+Home Assistant custom integration for controlling Cololight Mix ACID LED lights via Bluetooth Low Energy (BLE). Provides full control over all device features including RGB colors, 68 dynamic effects, speed control, variations, and smooth transitions.
 
 **Current Version:** 1.1.1
 **Repository:** https://github.com/johnnylafer/cololight-bluetooth-reverse-engineering
@@ -27,11 +27,13 @@ The device uses a proprietary 5-byte protocol format:
 
 ### UUIDs
 
+Corrected 11 Nov 2026 - this block had never matched `const.py` (an early guess from before the
+real characteristics were pinned down). Only two characteristics exist; power is sent through
+`CHAR_STATE` itself (type byte `0x80`/`0x81`), there is no separate power characteristic.
+
 ```python
-SERVICE_UUID = "2edcf977-60ac-49b0-aa2a-ed75abd74ea3"
-CHAR_STATE = "2edcf978-60ac-49b0-aa2a-ed75abd74ea3"    # Effects/scenes
-CHAR_POWER = "2edcf979-60ac-49b0-aa2a-ed75abd74ea3"    # Power control
-CHAR_BRIGHTNESS = "2edcf97a-60ac-49b0-aa2a-ed75abd74ea3"  # Brightness
+CHAR_STATE = "2EDCF977-60AC-49B0-AA2A-ED75ABD74EA3"       # Power, effects/scenes (via type byte)
+CHAR_BRIGHTNESS = "B4D64C4F-C5A0-4A1B-AFEA-306B66269750"  # Brightness
 ```
 
 ---
@@ -47,7 +49,7 @@ Example: ff00ff0000 = Red
 ### Mode 0x01 - Overall Dynamic Effects
 ```
 Format: [0xff][0x01][effect_index][speed][variation]
-- effect_index: 0x80-0xc4 (69 effects)
+- effect_index: 0x80-0xc4 (69-slot range; 68 are actually named in `const.py` - 0x8c is unmapped)
 - speed: 0x00-0xff (0=fastest, higher=slower)
 - variation: 0x00-0x0f (16 patterns)
 
@@ -129,7 +131,7 @@ Format: [0xff][0x06][effect_index][speed][cd_byte]
 **Entity ID:** `select.cololight_mix_acid_effect`
 
 **Features:**
-- Choose from 69 dynamic effects
+- Choose from 68 dynamic effects
 - Uses smooth mode 0x06 by default
 - Maintains current speed and variation
 
@@ -282,7 +284,7 @@ def decode_state(state_data: bytes) -> dict:
 ### v1.1.0
 **Major Update:**
 - Implemented official BLE protocol from manufacturer
-- Added all 69 dynamic effects
+- Added all 68 named dynamic effects
 - Created proper protocol encoder/decoder
 - Added variation mode control
 - Expanded effect list with proper naming
@@ -380,7 +382,7 @@ Translated from Chinese manufacturer documentation:
 - Original: Contact Cololight support for official spec
 
 ### Effect Names
-All 69 effects named following manufacturer documentation with descriptive English names matching the Chinese originals.
+All 68 effects named following manufacturer documentation with descriptive English names matching the Chinese originals.
 
 ---
 
